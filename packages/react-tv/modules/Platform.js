@@ -12,7 +12,22 @@ function isLGWebOS() {
 }
 
 function isSamsungTizen() {
-  return false;
+  return !!(window && window.tizen)
+}
+
+// @todo
+// Not sure if this list of userAgent is specifiq for laptop browser...
+function isLaptopBrowser() {
+  return navigator && navigator.userAgent && [
+    'OPR',
+    'Edge',
+    'MSIE',
+    'Opera',
+    'Safari',
+    'Chrome',
+    'Trident',
+    'Firefox',
+  ].some(n => navigator.userAgent.includes(n))
 }
 
 function isSamsungOrsay() {
@@ -21,6 +36,8 @@ function isSamsungOrsay() {
 
 function Plaform(checkPlatform: string) {
   switch (checkPlatform) {
+    case 'laptop':
+      return isLaptopBrowser()
     case 'webos':
       return isLGWebOS();
     case 'tizen':
