@@ -1,9 +1,0 @@
-.DS_Store
-*.log
-
-react-tv
-
-node_modules
-package-lock.json
-yarn.lock
-

@@ -12,21 +12,19 @@ class Clock extends React.Component {
   state = { date: new Date() }
 
   componentDidMount() {
-    setInterval(() => this.setState({date: new Date()}), 1000)
+    setInterval(() => this.setState({ date: new Date() }), 1000)
   }
 
   render() {
     if (Platform('webos')) {
-      return (
-        <h1>Time is {this.state.date.toLocaleTimeString()}</h1>
-      )
+      return <h1>Time is {this.state.date.toLocaleTimeString()}</h1>
     }
 
     return <h2>This App is available only at LG WebOS</h2>
   }
 }
 
-ReactTV.render(<Clock/>, document.getElementById('root'))
+ReactTV.render(<Clock />, document.getElementById('root'))
 ```
 
 ## Summary
@@ -42,8 +40,8 @@ ReactTV.render(<Clock/>, document.getElementById('root'))
   - [`renderOnAppLoaded`](#renderonapploaded)
   - [Spatial Navigation](#navigation)
 - [Examples](#examples)
-    - [Clock App](#clock-app)
-    - [Youtube App](#youtube-app)
+  - [Clock App](#clock-app)
+  - [Youtube App](#youtube-app)
 - [References for Study](#references)
   - [WebOS](#webos)
   - [Videos](#videos)
@@ -74,7 +72,7 @@ In addition: Unify the build for multiple TV platforms.
 
 ### Articles
 
-Friendly list of tutorials and articles: 
+Friendly list of tutorials and articles:
 
 - [Developing for TVs with React-TV](https://medium.com/@raphamorim/developing-for-tvs-with-react-tv-b5b5204964ef)
 
@@ -84,65 +82,6 @@ To install `react-tv-cli` (CLI Packager):
 
 ```bash
 $ yarn global add react-tv-cli
-```
-
-##### Support for React-TV-CLI
-
-| Target Platform | Status | Available Version |
-| --- | --- | --- |
-| `LG WebOS` | stable | 0.3.1 |
-| `Samsung Tizen` | [ongoing](https://github.com/raphamorim/react-tv/pull/104) | x |
-| `Samsung Orsay` | not started yet | x |
-| `Sony PS4` | not started yet | x |
-| `Nintendo Switch` | not started yet | x |
-
-### Developing for WebOS
-
-<p align="center"><img src="http://ksassets.timeincuk.net/wp/uploads/sites/54/2015/07/lg-webOS-2-0-2015-Main-1.jpg" /></p>
-
-**Short Description:** WebOS, also known as Open WebOS or LG WebOS, (previously known as HP WebOS and Palm WebOS, stylized as webOS) is a Linux kernel-based multitasking operating system for smart devices such as Smart TVs and it has been used as a mobile operating system.
-
---------------------------------------------------------
-
-First of all, setup your WebOS Environment:
-
-#### [Setup WebOS Enviroment](docs/setup-webos-environment.md)
-
-Then, init your react-tv project.
-
-```bash
-$ react-tv init <my-app-name>
-```
-
-Add the files related to your app on the React-TV entry on `package.json`:
-
-```json
-{
-  "name": "my-app-name",
-  "react-tv": {
-    "files": [
-      "index.html",
-      "bundle.js",
-      "style.css"
-    ]
-  }
-}
-```
-
-Running it on specific device:
-
-```
-$ react-tv run-webos <device>
-```
-
-* When you not specify the device, it runs on VirtualBox WebOS Simulator
-
-## [react-tv](https://www.npmjs.com/package/react-tv)
-
-To install `react-tv` (React Renderer):
-
-```bash
-$ yarn add react-tv
 ```
 
 ### `Platform`
@@ -167,7 +106,7 @@ Takes a component and returns a higher-order component version of that component
 ```js
 import { renderOnAppLoaded } from 'react-tv'
 
-const Component = () => (<div></div>)
+const Component = () => <div />
 const App = renderOnAppLoaded(Component)
 ```
 
@@ -177,7 +116,7 @@ Similar to [react-dom findDOMNode](https://reactjs.org/docs/react-dom.html#findd
 
 ### Navigation
 
-If you want to start with Navigation for TVs. React-TV provides a package for spatial navigation with declarative support based on [Netflix navigation system](https://medium.com/netflix-techblog/pass-the-remote-user-input-on-tv-devices-923f6920c9a8). 
+If you want to start with Navigation for TVs. React-TV provides a package for spatial navigation with declarative support based on [Netflix navigation system](https://medium.com/netflix-techblog/pass-the-remote-user-input-on-tv-devices-923f6920c9a8).
 
 [React-TV Navigation](https://github.com/react-tv/react-tv-navigation) exports `withFocusable` and `withNavigation` which act as helpers for Navigation.
 
@@ -186,18 +125,26 @@ import React from 'react'
 import ReactTV from 'react-tv'
 import { withFocusable, withNavigation } from 'react-tv-navigation'
 
-const Item = ({focused, setFocus, focusPath}) => {
-  focused = (focused) ? 'focused' : 'unfocused'
+const Item = ({ focused, setFocus, focusPath }) => {
+  focused = focused ? 'focused' : 'unfocused'
   return (
-    <div onClick={() => { setFocus() }} >
+    <div
+      onClick={() => {
+        setFocus()
+      }}
+    >
       It's {focused} Item
     </div>
   )
 }
 
-const Button = ({setFocus}) => {
+const Button = ({ setFocus }) => {
   return (
-    <div onClick={() => { setFocus('item-1') }}>
+    <div
+      onClick={() => {
+        setFocus('item-1')
+      }}
+    >
       Back To First Item!
     </div>
   )
@@ -206,22 +153,23 @@ const Button = ({setFocus}) => {
 const FocusableItem = withFocusable(Item)
 const FocusableButton = withFocusable(Button)
 
-function App({currentFocusPath}) {
+function App({ currentFocusPath }) {
   return (
     <div>
       <h1>Current FocusPath: '{currentFocusPath}'</h1>,
-      <FocusableItem focusPath='item-1'/>
-      <FocusableItem focusPath='item-2'/>
+      <FocusableItem focusPath="item-1" />
+      <FocusableItem focusPath="item-2" />
       <FocusableButton
-        focusPath='button'
-        onEnterPress={() => console.log('Pressed enter on Button!')}/>
+        focusPath="button"
+        onEnterPress={() => console.log('Pressed enter on Button!')}
+      />
     </div>
   )
 }
 
 const NavigableApp = withNavigation(App)
 
-ReactTV.render(<NavigableApp/>, document.querySelector('#app'))
+ReactTV.render(<NavigableApp />, document.querySelector('#app'))
 ```
 
 See [examples/navigation](examples/navigation) for more details about usage.
@@ -272,6 +220,7 @@ See [examples/navigation](examples/navigation) for more details about usage.
 - https://github.com/linuxenko/awesome-smarttv
 
 ### React Basics and Renderer Architecture
+
 - https://github.com/reactjs/react-basic
 - https://github.com/iamdustan/tiny-react-renderer
 - https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html
@@ -316,7 +265,7 @@ Add additional features users expect from a Renderer. Then fix bugs and stabiliz
 - [ ] Reactive Renderer
 - [ ] Testing and stability
 
----------------------------------------------------- 
+---
 
 See ReactTV's [Changelog](https://github.com/raphamorim/react-tv/blob/master/CHANGELOG.md).
 
